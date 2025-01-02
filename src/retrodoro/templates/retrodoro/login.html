@@ -12,14 +12,16 @@
     </div>
 
     <div class="form-container">
-      <form action="login">
+      <form action="{% url 'loginuser' %}" method="post">
+        {% csrf_token %}
           <input type="text" class="username" name="username" 
               placeholder="Username" required>
           
           <input type="password" class="password" name="password" 
               placeholder="Password" required>
+          <button type="submit">Submit</button>
       </form>
-      <button type="submit">Submit</button>
+      
     </div>
     </div>
 
