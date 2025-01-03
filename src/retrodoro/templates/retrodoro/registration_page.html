@@ -1,0 +1,31 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'retrodoro/registration.css' %}" />
+<!doctype html>
+<html>
+  <head>
+    <title>Registration</title>
+  </head>
+  <body>
+    <form method="POST" action="">
+        {% csrf_token %}
+
+        <h2>Register</h2>
+
+        <div class="username_row">
+        {{form.username.label}}
+        {{form.username}}
+        </div>
+
+        <div class="password1_row">
+        {{form.password1.label}}
+        {{form.password1}}
+        </div>
+
+        <div class="password2_row">
+        {{form.password2.label}}
+        {{form.password2}}
+        </div>
+        <input class="submit" type="submit" name="Create User">
+    </form>
+  </body>
+</html>

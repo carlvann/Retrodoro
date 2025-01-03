@@ -1,18 +1,38 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect
 from .utils.db_util import user_exists, add_user
 
 
-def login(request):
-    return render(request, 'retrodoro/login.html')
+def login_page(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
 
-def loginuser(request):
-    if request.POST:
-        request_data = request.POST.dict()
-        username = request_data.get("username")
-        password = request_data.get("password")
-        if not user_exists:
-            add_user(username, password)
-            return render(request, 'retrodoro/login.html')
+        user = authenticate(request, username=username, password=password)
 
-    return render(request, 'retrodoro/login.html')
+        if user:
+            login(request, user)
+            return redirect('retrodoro')
+
+    return render(request, 'retrodoro/login_page.html')
+
+def logout_page(request):
+    if request.method == 'POST':
+        logout(request)
+    return redirect('login')
+
+def registration_page(request):
+    form = UserCreationForm()
+    context = {
+        'form': form
+    }
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    return render(request, 'retrodoro/registration_page.html', context)
+
+def retrodoro(request):
+    return render(request, 'retrodoro/retrodoro.html')
